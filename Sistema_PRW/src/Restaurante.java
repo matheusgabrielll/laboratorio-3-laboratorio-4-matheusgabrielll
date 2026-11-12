@@ -58,7 +58,7 @@ public class Restaurante {
     }
 
     public List<Visita> getLivroDeVisitas() {
-        return new ArrayList<>(clientesUnicos);
+        return new ArrayList<>(livroDeVisitas);
     }
 
     public List<Cliente> getClientesUnicos() {
