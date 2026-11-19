@@ -112,10 +112,8 @@ public class Cliente {
      *
      * @return código hash do cliente
      */
-
     @Override
     public int hashCode() {
         return Objects.hashCode(email);
     }
-
 }

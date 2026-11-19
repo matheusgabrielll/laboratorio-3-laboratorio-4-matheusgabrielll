@@ -23,7 +23,6 @@ public class Sistema_PRW {
         this.restaurantes = new HashMap<>();
         this.clientes = new HashMap<>();
     }
-
     /**
      * Adiciona um novo restaurante no sistema.
      * Não adiciona se ja existir um restaurante com o mesmo nome
@@ -222,6 +221,99 @@ public class Sistema_PRW {
             resultado[i] = visitas.get(inicio + i).toString();
         }
         return resultado;
+    }
+
+    public String relatorioGeral() {
+        int totalRestaurantes = restaurantes.size();
+        int totalClientes = clientes.size();
+        int somaVisitantes = 0;
+        int somaVisitas = 0;
+        int maiorVisitas = 0;
+
+        for (Restaurante r : restaurantes.values()) {
+            somaVisitantes += r.getTotalClientes();
+            somaVisitas += r.getTotalVisitas();
+            if (r.getTotalVisitas() > maiorVisitas) {
+                maiorVisitas = r.getTotalVisitas();
+            }
+        }
+
+        double mediaVisitantes = 0;
+        double mediaVisitas = 0;
+        if (totalRestaurantes > 0) {
+            mediaVisitantes = (double) somaVisitantes / totalRestaurantes;
+            mediaVisitas = (double) somaVisitas / totalRestaurantes;
+        }
+
+        String maisVisitados = "";
+        for (Restaurante r : restaurantes.values()) {
+            if (r.getTotalVisitas() == maiorVisitas) {
+                if (!maisVisitados.isEmpty()) {
+                    maisVisitados += ", ";
+                }
+                maisVisitados += r.getNome();
+            }
+        }
+
+        String texto = "Relatório Geral Paraiba Restaurante Week\n\n";
+        texto += "(1) Restaurantes participantes : " + totalRestaurantes + "\n";
+        texto += "(2) Clientes participantes : " + totalClientes + "\n";
+        texto += "(5) Restaurante mais visitado: " + maisVisitados + "\n";
+        texto += "(3) Número médio de visitantes dos restaurantes: " + String.format("%.2f", mediaVisitantes) + "\n";
+        texto += "(4) Número médio de visitas nos restaurantes: " + String.format("%.2f", mediaVisitas) + "\n";
+
+        for (Restaurante r : restaurantes.values()) {
+            double participacaoVisitas = 0;
+            double participacaoVisitantes = 0;
+            if (somaVisitas > 0) {
+                participacaoVisitas = (double) r.getTotalVisitas() * 100 / somaVisitas;
+            }
+            if (somaVisitantes > 0) {
+                participacaoVisitantes = (double) r.getTotalClientes() * 100 / somaVisitantes;
+            }
+            texto += "\nRestaurante: " + r.getNome() + "\n";
+            texto += "(6) Participação de Visitas: " + String.format("%.2f", participacaoVisitas) + "%\n";
+            texto += "(7) Participação de Visitantes: " + String.format("%.2f", participacaoVisitantes) + "%\n";
+        }
+        return texto;
+    }
+
+    public String relatorioFinanceiro() {
+        double receitaTotal = 0;
+        for (Restaurante r : restaurantes.values()) {
+            receitaTotal += r.getReceita();
+        }
+
+        double gastoTotal = 0;
+        for (Cliente c : clientes.values()) {
+            gastoTotal += c.getTotalGasto();
+        }
+
+        double mediaReceita = 0;
+        double mediaGastos = 0;
+        if (restaurantes.size() > 0) {
+            mediaReceita = receitaTotal / restaurantes.size();
+        }
+        if (clientes.size() > 0) {
+            mediaGastos = gastoTotal / clientes.size();
+        }
+
+        String texto = "Relatório Financeiro Paraiba Restaurante Week\n\n";
+        texto += "Receita total do evento: R$" + String.format("%.2f", receitaTotal) + "\n";
+        texto += "Média de receita por restaurante: R$" + String.format("%.2f", mediaReceita) + "\n";
+        texto += "Média de gastos por cliente: R$" + String.format("%.2f", mediaGastos) + "\n";
+        return texto;
+    }
+
+    public String relatorioEngajamento() {
+        String texto = "Relatório de Engajamento Paraiba Restaurante Week\n\n";
+        for (Restaurante r : restaurantes.values()) {
+            for (Cliente c : r.getClientesUnicos()) {
+                texto += "Cliente: " + c.getNome() + ", Restaurante: " + r.getNome()
+                        + ", Visitas: " + r.getVisitasDoCliente(c.getEmail()) + "\n";
+            }
+        }
+        return texto;
     }
 
 //ajuda de leve

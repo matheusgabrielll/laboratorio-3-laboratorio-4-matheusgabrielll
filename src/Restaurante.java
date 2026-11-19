@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,8 @@ public class Restaurante {
      */
     private int totalVotos;
 
+    private HashMap<String, Integer> visitasPorCliente;
+
     /**
      * Construtor do restaurante.
      * Define o nome e o prato, e começa com o livro de visitas e
@@ -48,6 +51,7 @@ public class Restaurante {
         this.livroDeVisitas = new ArrayList<>();
         this.clientesUnicos = new HashSet<>();
         this.totalVotos = 0;
+        this.visitasPorCliente = new HashMap<>();
     }
 
     /**
@@ -62,6 +66,7 @@ public class Restaurante {
         clientesUnicos.add(cliente);
         livroDeVisitas.add(new Visita(cliente.getNome(), comentario));
         cliente.adicionarGasto(PRECO);
+        visitasPorCliente.put(cliente.getEmail(), getVisitasDoCliente(cliente.getEmail()) + 1);
     }
 
     /**
@@ -115,6 +120,22 @@ public class Restaurante {
         return totalVotos;
     }
 
+    public int getTotalVisitas() {
+        return livroDeVisitas.size();
+    }
+
+    public int getTotalClientes() {
+        return clientesUnicos.size();
+    }
+
+    public double getReceita() {
+        return livroDeVisitas.size() * PRECO;
+    }
+
+    public int getVisitasDoCliente(String emailCliente) {
+        return visitasPorCliente.getOrDefault(emailCliente, 0);
+    }
+
     /**
      * Retorna uma cópia da lista de visitas do restaurante.
      * Por ser uma cópia, mexer na lista retornada não altera o livro original.
@@ -160,5 +181,4 @@ public class Restaurante {
     public int hashCode() {
         return Objects.hashCode(nome);
     }
-
 }

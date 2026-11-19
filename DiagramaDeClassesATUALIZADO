@@ -1,0 +1,91 @@
+Main
+association Sistema_PRW
+---
+---
++ main(args: String[]): void
+---
+
+Sistema_PRW
+composes Restaurante
+composes Cliente
+---
+- restaurantes: HashMap<String, Restaurante>
+- clientes: HashMap<String, Cliente>
+---
++ Sistema_PRW()
++ adicionarRestaurante(nome: String, prato: String): boolean
++ adicionarCliente(nome: String, email: String): boolean
++ visitarRestaurante(emailCliente: String, nomeRestaurante: String): void
++ visitarRestaurante(emailCliente: String, nomeRestaurante: String, comentario: String): void
++ obtemGastoCliente(emailCliente: String): double
++ listarClientesRestaurante(nomeRestaurante: String): String[]
++ votarPratoPreferido(emailCliente: String, nomeRestaurante: String): String
++ melhorPrato(): String
++ listarLivroVisitas(nomeRestaurante: String): String[]
++ listarLivroVisitas(nomeRestaurante: String, num_recentes: int): String[]
++ relatorioGeral(): String
++ relatorioFinanceiro(): String
++ relatorioEngajamento(): String
+- buscarCliente(email: String): Cliente
+- buscarRestaurante(nome: String): Restaurante
+---
+
+Restaurante
+composes Visita
+association Cliente
+---
+- nome: String
+- prato: String
+- PRECO: double
+- livroDeVisitas: ArrayList<Visita>
+- clientesUnicos: HashSet<Cliente>
+- totalVotos: int
+- visitasPorCliente: HashMap<String, Integer>
+---
++ Restaurante(nome: String, prato: String)
++ registrarVisita(cliente: Cliente, comentario: String): void
++ adicionaVoto(): void
++ jaFoiVisitadoPor(emailCliente: String): boolean
++ getNome(): String
++ getPrato(): String
++ getTotalVotos(): int
++ getTotalVisitas(): int
++ getTotalClientes(): int
++ getReceita(): double
++ getVisitasDoCliente(emailCliente: String): int
++ getLivroDeVisitas(): List<Visita>
++ getClientesUnicos(): List<Cliente>
++ equals(o: Object): boolean
++ hashCode(): int
+---
+
+Cliente
+---
+- nome: String
+- email: String
+- totalGasto: double
+- pratoPreferido: String
+---
++ Cliente(nome: String, email: String)
++ adicionarGasto(valor: double): void
++ getNome(): String
++ getEmail(): String
++ getTotalGasto(): double
++ getPratoPreferido(): String
++ setPratoPreferido(novoPrato: String): void
++ equals(o: Object): boolean
++ hashCode(): int
+---
+
+Visita
+---
+- data: String
+- nomeCliente: String
+- comentario: String
+---
++ Visita(nomeCliente: String, comentario: String)
++ getData(): String
++ getNomeCliente(): String
++ getComentario(): String
++ toString(): String
+---
